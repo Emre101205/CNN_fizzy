@@ -37,8 +37,8 @@ transform = transforms.Compose([
 train_data = torchvision.datasets.CIFAR10(root='./data', train=True, transform=transform, download=True)
 test_data = torchvision.datasets.CIFAR10(root='./data', train=False, transform=transform, download=True)
 
-train_loader = torch.utils.data.DataLoader(train_data, batch_size=512, shuffle=True, num_workers=4, pin_memory=True)
-test_loader = torch.utils.data.DataLoader(test_data, batch_size=512, shuffle=True, num_workers=4, pin_memory=True)
+train_loader = torch.utils.data.DataLoader(train_data, batch_size=512, shuffle=True, num_workers=0, pin_memory=True)
+test_loader = torch.utils.data.DataLoader(train_data, batch_size=512, shuffle=True, num_workers=0, pin_memory=True)
 
 class_names = ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
@@ -93,7 +93,7 @@ loss_function = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 # ===== TRAINING =====
-for epoch in range(5):
+for epoch in range(25):
     t0 = time.time()
     running_loss = 0.0
     for inputs, labels in train_loader:
