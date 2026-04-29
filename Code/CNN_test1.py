@@ -34,52 +34,64 @@ transform = transforms.Compose([
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ])
 
+train_data = torchvision.datasets.CIFAR10(root='./data', train=True, transform=transform, download=True)
+test_data = torchvision.datasets.CIFAR10(root='./data', train=False, transform=transform, download=True)
 
-class_names = ['Shake','Tap','Spin']
+train_loader = torch.utils.data.DataLoader(train_data, batch_size=512, shuffle=True, num_workers=0, pin_memory=True)
+test_loader = torch.utils.data.DataLoader(train_data, batch_size=512, shuffle=True, num_workers=0, pin_memory=True)
+
+class_names = ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
 # ===== MODEL =====
 class NeuralNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.conv1 = nn.Conv2d(3, 12, 5)
+        # Block 1: 32x32 -> 16x16
+        self.conv1a = nn.Conv2d(3, 32, 3, padding=1)
+        self.bn1a = nn.BatchNorm2d(32)
+        self.conv1b = nn.Conv2d(32, 32, 3, padding=1)
+        self.bn1b = nn.BatchNorm2d(32)
+        # Block 2: 16x16 -> 8x8
+        self.conv2a = nn.Conv2d(32, 64, 3, padding=1)
+        self.bn2a = nn.BatchNorm2d(64)
+        self.conv2b = nn.Conv2d(64, 64, 3, padding=1)
+        self.bn2b = nn.BatchNorm2d(64)
+        # Block 3: 8x8 -> 4x4
+        self.conv3a = nn.Conv2d(64, 128, 3, padding=1)
+        self.bn3a = nn.BatchNorm2d(128)
+        self.conv3b = nn.Conv2d(128, 128, 3, padding=1)
+        self.bn3b = nn.BatchNorm2d(128)
+
         self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(12, 24, 5)
-        self.fc1 = nn.Linear(24*5*5, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10) 
+        self.fc1 = nn.Linear(128 * 4 * 4, 256)
+        self.dropout = nn.Dropout(0.5)
+        self.fc2 = nn.Linear(256, 10)
 
     def forward(self, x):
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
+        x = F.relu(self.bn1a(self.conv1a(x)))
+        x = F.relu(self.bn1b(self.conv1b(x)))
+        x = self.pool(x)
+
+        x = F.relu(self.bn2a(self.conv2a(x)))
+        x = F.relu(self.bn2b(self.conv2b(x)))
+        x = self.pool(x)
+
+        x = F.relu(self.bn3a(self.conv3a(x)))
+        x = F.relu(self.bn3b(self.conv3b(x)))
+        x = self.pool(x)
+
         x = torch.flatten(x, 1)
         x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.dropout(x)
+        x = self.fc2(x)
         return x
 
 net = NeuralNet().to(device)
-print(f'Model on: {next(net.parameters()).device}')
 
-loss_function = nn.CrossEntropyLoss()
-optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-# ===== TRAINING =====
-for epoch in range(5):
-    t0 = time.time()
-    running_loss = 0.0
-    for inputs, labels in train_loader:
-        inputs, labels = inputs.to(device), labels.to(device)
-        optimizer.zero_grad()
-        outputs = net(inputs)
-        loss = loss_function(outputs, labels)
-        loss.backward()
-        optimizer.step()
-        running_loss += loss.item()
-    print(f'Epoch {epoch}: loss={running_loss/len(train_loader):.4f}, time={time.time()-t0:.1f}s')
+net.load_state_dict(torch.load('trained_net_20260428_213101.pth', map_location=device))
 
-filename = f'trained_net_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pth'
-torch.save(net.state_dict(), filename)
-print(f'Saved to {filename}')
+
 
 # ===== EVALUATION =====
 net.eval()
