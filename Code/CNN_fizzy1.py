@@ -26,7 +26,7 @@ train_data, test_data = random_split(full_dataset, [n_train, n_test])
 train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
 test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=False)
 
-class_names = ['idle', 'shake', 'tap', 'updown']
+class_names = ['idle', 'shake', 'tap', 'spin']
 
 # ===== MODEL =====
 class IMUNet(nn.Module):
