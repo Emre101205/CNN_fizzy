@@ -5,6 +5,9 @@ import torch.nn.functional as F
 import torch.optim as optim
 import time
 from datetime import datetime
+from torch.utils.data import random_split
+
+from data import GestureDataset
 
 # ===== DIAGNOSTICS =====
 print(f'Python: {sys.executable}')
@@ -15,25 +18,28 @@ print(f'GPU: {torch.cuda.get_device_name(0)}')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # ===== DATA =====
-# train_loader and test_loader come from your data pipeline (CSVs)
+full_dataset = GestureDataset()
+n_test = int(0.2 * len(full_dataset))
+n_train = len(full_dataset) - n_test
+train_data, test_data = random_split(full_dataset, [n_train, n_test])
 
-class_names = ['tap', 'shake', 'spin', 'idle']
+train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
+test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=False)
+
+class_names = ['idle', 'shake', 'tap', 'updown']
 
 # ===== MODEL =====
 class IMUNet(nn.Module):
     def __init__(self):
         super().__init__()
-        # Block 1: 128 -> 32 timesteps
         self.conv1 = nn.Conv1d(6, 16, kernel_size=7, padding=3)
         self.bn1 = nn.BatchNorm1d(16)
-        # Block 2: 32 -> 8 timesteps
         self.conv2 = nn.Conv1d(16, 32, kernel_size=5, padding=2)
         self.bn2 = nn.BatchNorm1d(32)
-        # Block 3: 8 -> 1 timestep
         self.conv3 = nn.Conv1d(32, 32, kernel_size=3, padding=1)
         self.bn3 = nn.BatchNorm1d(32)
 
-        self.fc = nn.Linear(32, 10)
+        self.fc = nn.Linear(32, 4)
 
     def forward(self, x):
         x = F.relu(self.bn1(self.conv1(x)))
