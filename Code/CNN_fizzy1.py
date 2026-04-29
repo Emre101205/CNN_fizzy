@@ -62,7 +62,7 @@ loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adam(net.parameters(), lr=0.001)
 
 # ===== TRAINING =====
-for epoch in range(50):
+for epoch in range(500):
     t0 = time.time()
     running_loss = 0.0
     for inputs, labels in train_loader:
