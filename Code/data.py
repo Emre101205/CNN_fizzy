@@ -24,7 +24,7 @@ from torch.utils.data import Dataset, DataLoader
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_test')
+RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings')
 
 # Map gesture names to numbers. The CNN works with numbers, not text.
 # Idle = 0, Shake = 1, Tap = 2, UpDown = 3

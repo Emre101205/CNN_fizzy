@@ -36,17 +36,32 @@ net.eval()
 test_dataset = GestureDataset()   # points at whatever folder data.py is set to
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
-class_names = ['idle', 'shake', 'tap', 'updown']
+class_names = ['idle', 'shake', 'tap', 'spin']
 
 # ===== EVALUATE =====
-correct = 0
-total = 0
+CONFIDENCE_THRESHOLD = 0.90
+num_classes = 4
+matrix = torch.zeros(num_classes, num_classes, dtype=torch.int64)
+unsure_count = 0
+
+net.eval()
 with torch.no_grad():
     for inputs, labels in test_loader:
         inputs, labels = inputs.to(device), labels.to(device)
-        outputs = net(inputs)
-        _, predicted = torch.max(outputs, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+        probs = F.softmax(net(inputs), dim=1)
+        max_probs, predicted = torch.max(probs, dim=1)
+        is_confident = max_probs >= CONFIDENCE_THRESHOLD
+        
+        unsure_count += (~is_confident).sum().item()
+        
+        # Only fill in the matrix for confident predictions
+        for t, p, c in zip(labels.cpu(), predicted.cpu(), is_confident.cpu()):
+            if c:
+                matrix[t.item(), p.item()] += 1
 
-print(f'Test Accuracy: {100 * correct / total:.2f}%')
+print(f"\n{unsure_count} predictions marked unsure (below {CONFIDENCE_THRESHOLD})")
+print("\nConfusion Matrix (confident predictions only)")
+print(f"{'':>8}" + "".join(f"{name:>8}" for name in class_names))
+for i, name in enumerate(class_names):
+    row = "".join(f"{matrix[i, j].item():>8}" for j in range(num_classes))
+    print(f"{name:>8}{row}")
