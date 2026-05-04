@@ -28,7 +28,7 @@ RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_v3')
 
 # Map gesture names to numbers. The CNN works with numbers, not text.
 # Idle = 0, Shake = 1, Tap = 2, UpDown = 3
-LABELS = {'IDLE': 0, 'SHAKE': 1, 'TAP': 2, 'SPIN': 3}
+LABELS = {'IDLE' : 0, 'SHAKE': 1, 'TAP': 2, 'SPIN': 3}
 
 # Which columns from the CSV to actually use as inputs.
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
@@ -38,12 +38,12 @@ FEATURE_COLUMNS = ['Roll', 'Pitch', 'Yaw', 'Acc X', 'Acc Y', 'Acc Z', 'Gyro X', 
 # How long each "window" is, in samples.
 # Your data is recorded at ~100 samples per second,
 # so 200 samples ≈ 2 seconds of motion.
-WINDOW_SIZE = 128
+WINDOW_SIZE = 64
 
 # How far we slide the window forward each time.
 # 100 means each new window starts halfway through the previous one
 # (50% overlap). This gives us more training examples.
-WINDOW_STRIDE = 64
+WINDOW_STRIDE = 32
 
 
 # =============================================================
