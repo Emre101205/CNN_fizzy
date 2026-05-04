@@ -24,11 +24,11 @@ from torch.utils.data import Dataset, DataLoader
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings')
+RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_v3')
 
 # Map gesture names to numbers. The CNN works with numbers, not text.
 # Idle = 0, Shake = 1, Tap = 2, UpDown = 3
-LABELS = {'Idle': 0, 'Shake': 1, 'Tap': 2, 'Spin': 3}
+LABELS = {'IDLE': 0, 'SHAKE': 1, 'TAP': 2, 'SPIN': 3}
 
 # Which columns from the CSV to actually use as inputs.
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
