@@ -33,7 +33,7 @@ LABELS = {'Idle': 0, 'Shake': 1, 'Tap': 2, 'Spin': 3}
 # Which columns from the CSV to actually use as inputs.
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
 # columns (they were full of NaN / missing values in your data).
-FEATURE_COLUMNS = ['Roll', 'Pitch', 'Yaw', 'Acc X', 'Acc Y', 'Acc Z']
+FEATURE_COLUMNS = ['Roll', 'Pitch', 'Yaw', 'Acc X', 'Acc Y', 'Acc Z', 'Gyro X', 'Gyro Y', 'Gyro Z']
 
 # How long each "window" is, in samples.
 # Your data is recorded at ~100 samples per second,

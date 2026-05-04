@@ -32,7 +32,7 @@ class_names = ['idle', 'shake', 'tap', 'spin']
 class IMUNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.conv1 = nn.Conv1d(6, 16, kernel_size=7, padding=3)
+        self.conv1 = nn.Conv1d(9, 16, kernel_size=7, padding=3)
         self.bn1 = nn.BatchNorm1d(16)
         self.conv2 = nn.Conv1d(16, 32, kernel_size=5, padding=2)
         self.bn2 = nn.BatchNorm1d(32)
@@ -80,40 +80,40 @@ torch.save(net.state_dict(), filename)
 print(f'Saved to {filename}')
 
 # ===== EVALUATION =====
-CONFIDENCE_THRESHOLD = 0.90   # only count a prediction if it's at least 90% sure
+# CONFIDENCE_THRESHOLD = 0.90   # only count a prediction if it's at least 90% sure
 
-net.eval()
-correct = 0
-total = 0
-confident = 0      # how many predictions cleared the threshold
-unsure = 0         # how many we threw out as "not sure enough"
+# net.eval()
+# correct = 0
+# total = 0
+# confident = 0      # how many predictions cleared the threshold
+# unsure = 0         # how many we threw out as "not sure enough"
 
-with torch.no_grad():
-    for inputs, labels in test_loader:
-        inputs, labels = inputs.to(device), labels.to(device)
-        outputs = net(inputs)
+# with torch.no_grad():
+#     for inputs, labels in test_loader:
+#         inputs, labels = inputs.to(device), labels.to(device)
+#         outputs = net(inputs)
         
-        # Convert raw logits to probabilities (each row sums to 1)
-        probs = F.softmax(outputs, dim=1)
+#         # Convert raw logits to probabilities (each row sums to 1)
+#         probs = F.softmax(outputs, dim=1)
         
-        # Get both the top probability AND which class it belongs to
-        max_probs, predicted = torch.max(probs, dim=1)
+#         # Get both the top probability AND which class it belongs to
+#         max_probs, predicted = torch.max(probs, dim=1)
         
-        # Build a True/False mask: True where confidence ≥ threshold
-        is_confident = max_probs >= CONFIDENCE_THRESHOLD
+#         # Build a True/False mask: True where confidence ≥ threshold
+#         is_confident = max_probs >= CONFIDENCE_THRESHOLD
         
-        # Tally
-        total     += labels.size(0)
-        confident += is_confident.sum().item()
-        unsure    += (~is_confident).sum().item()
+#         # Tally
+#         total     += labels.size(0)
+#         confident += is_confident.sum().item()
+#         unsure    += (~is_confident).sum().item()
         
-        # Only count something as "correct" if (a) we were confident AND (b) we got it right
-        correct += ((predicted == labels) & is_confident).sum().item()
+#         # Only count something as "correct" if (a) we were confident AND (b) we got it right
+#         correct += ((predicted == labels) & is_confident).sum().item()
 
-print(f'Total windows tested:       {total}')
-print(f'Confident predictions:      {confident}  ({100*confident/total:.1f}%)')
-print(f'Marked as unsure:           {unsure}  ({100*unsure/total:.1f}%)')
-print(f'Correct AND confident:      {correct}')
-if confident > 0:
-    print(f'Accuracy among confident:   {100*correct/confident:.2f}%')
-print(f'Accuracy over all windows:  {100*correct/total:.2f}%')
+# print(f'Total windows tested:       {total}')
+# print(f'Confident predictions:      {confident}  ({100*confident/total:.1f}%)')
+# print(f'Marked as unsure:           {unsure}  ({100*unsure/total:.1f}%)')
+# print(f'Correct AND confident:      {correct}')
+# if confident > 0:
+#     print(f'Accuracy among confident:   {100*correct/confident:.2f}%')
+# print(f'Accuracy over all windows:  {100*correct/total:.2f}%')
