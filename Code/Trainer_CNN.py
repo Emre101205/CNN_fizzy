@@ -28,18 +28,20 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=Fals
 
 class_names = ['idle', 'shake', 'tap', 'spin']
 
+INPUT_AMOUNT = 6
+CLASSES_AMOUNT = 4
 # ===== MODEL =====
 class IMUNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.conv1 = nn.Conv1d(9, 16, kernel_size=7, padding=3)
+        self.conv1 = nn.Conv1d(INPUT_AMOUNT, 16, kernel_size=7, padding=3)
         self.bn1 = nn.BatchNorm1d(16)
         self.conv2 = nn.Conv1d(16, 32, kernel_size=5, padding=2)
         self.bn2 = nn.BatchNorm1d(32)
         self.conv3 = nn.Conv1d(32, 32, kernel_size=3, padding=1)
         self.bn3 = nn.BatchNorm1d(32)
 
-        self.fc = nn.Linear(32, 4)
+        self.fc = nn.Linear(32, CLASSES_AMOUNT)
 
     def forward(self, x):
         x = F.relu(self.bn1(self.conv1(x)))

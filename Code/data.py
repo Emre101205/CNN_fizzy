@@ -24,7 +24,7 @@ from torch.utils.data import Dataset, DataLoader
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_v3')
+RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_v4')
 
 # Map gesture names to numbers. The CNN works with numbers, not text.
 # Idle = 0, Shake = 1, Tap = 2, UpDown = 3
@@ -33,7 +33,8 @@ LABELS = {'IDLE' : 0, 'SHAKE': 1, 'TAP': 2, 'SPIN': 3}
 # Which columns from the CSV to actually use as inputs.
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
 # columns (they were full of NaN / missing values in your data).
-FEATURE_COLUMNS = ['Roll', 'Pitch', 'Yaw', 'Acc X', 'Acc Y', 'Acc Z', 'Gyro X', 'Gyro Y', 'Gyro Z']
+# FEATURE_COLUMNS = ['Roll', 'Pitch', 'Yaw', 'Acc X', 'Acc Y', 'Acc Z', 'Gyro X', 'Gyro Y', 'Gyro Z']
+FEATURE_COLUMNS = ['Acc X', 'Acc Y', 'Acc Z', 'Gyro X', 'Gyro Y', 'Gyro Z']
 
 # How long each "window" is, in samples.
 # Your data is recorded at ~100 samples per second,
@@ -116,7 +117,7 @@ class GestureDataset(Dataset):
 
             # Find every CSV that starts with this gesture name
             # e.g. 'Idle_001.csv', 'Idle_002.csv', ...
-            pattern = os.path.join(RECORDINGS_DIR, f'{gesture_name}_*.csv')
+            pattern = os.path.join(RECORDINGS_DIR, f'*{gesture_name}*.csv')
             file_paths = sorted(glob.glob(pattern))
 
             print(f'Found {len(file_paths)} files for "{gesture_name}"')
@@ -149,6 +150,12 @@ class GestureDataset(Dataset):
         std = X.std(axis=(0, 2), keepdims=True) + 1e-8   # +tiny number to avoid /0
         X = (X - mean) / std
 
+        # Saves the mean and std of the data
+        np.save('imu_mean.npy', mean)
+        np.save('imu_std.npy', std)
+        print('Saved imu_mean.npy and imu_std.npy')
+
+
         # Convert NumPy arrays to PyTorch tensors and store them
         self.X = torch.from_numpy(X).float()
         self.y = torch.from_numpy(y).long()
@@ -175,7 +182,7 @@ if __name__ == '__main__':
     print(f'Input shape:   {dataset.X.shape}   (windows, channels, timesteps)')
     print(f'Label shape:   {dataset.y.shape}')
     print(f'Examples per class: {torch.bincount(dataset.y).tolist()}')
-    print(f'   (in order: Idle, Shake, Tap, UpDown)')
+    print(f'   (in order: Idle, Shake, Tap, Spin)')
 
     # Wrap in a DataLoader — this is what you'll loop over during training.
     # batch_size=32 means it gives you 32 windows at a time.
