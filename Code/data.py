@@ -155,6 +155,8 @@ class GestureDataset(Dataset):
         np.save('imu_std.npy', std)
         print('Saved imu_mean.npy and imu_std.npy')
 
+        print(f'mean = {mean}')
+        print(f'std = {std}')
 
         # Convert NumPy arrays to PyTorch tensors and store them
         self.X = torch.from_numpy(X).float()
