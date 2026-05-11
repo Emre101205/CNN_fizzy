@@ -39,7 +39,7 @@ import os
 
 # Make sure we can import IMUNet from CNN_fizzy.py
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from CNN_fizzy import IMUNet  # noqa
+from Trainer_CNN import IMUNet  # noqa
 
 
 # ---------------------------------------------------------------------------
