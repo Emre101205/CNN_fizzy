@@ -22,7 +22,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from CNN_fizzy import IMUNet
+from Trainer_CNN import IMUNet
 
 
 # ---------------------------------------------------------------------------

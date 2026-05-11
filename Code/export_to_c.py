@@ -45,7 +45,7 @@ from CNN_fizzy import IMUNet  # noqa
 # ---------------------------------------------------------------------------
 # 1. Load the trained model
 # ---------------------------------------------------------------------------
-PTH_PATH = "Trained_004.pth"
+PTH_PATH = "Trained_003.pth"
 MEAN_PATH = "imu_mean.npy"
 STD_PATH = "imu_std.npy"
 OUT_PATH = "model_weights.h"
