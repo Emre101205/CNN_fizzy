@@ -24,11 +24,11 @@ from torch.utils.data import Dataset, DataLoader
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_v4')
+RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_v6')
 
 # Map gesture names to numbers. The CNN works with numbers, not text.
 # Idle = 0, Shake = 1, Tap = 2, UpDown = 3
-LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4}
+LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
 
 # Which columns from the CSV to actually use as inputs.
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
@@ -121,13 +121,13 @@ class GestureDataset(Dataset):
             # Find every CSV that starts with this gesture name
             # e.g. 'Idle_001.csv', 'Idle_002.csv', ...
 
-            pattern = os.path.join(RECORDINGS_DIR, f'*{gesture_name}*.csv')
-            file_paths = sorted(glob.glob(pattern))
+            # pattern = os.path.join(RECORDINGS_DIR, f'*{gesture_name}*.csv')
+            # file_paths = sorted(glob.glob(pattern))
 
-            # file_paths = sorted([
-            #     p for p in all_csv_paths
-            #     if gesture_name.lower() in os.path.basename(p).lower()
-            # ])
+            file_paths = sorted([
+                p for p in all_csv_paths
+                if gesture_name.lower() in os.path.basename(p).lower()
+            ])
 
 
 

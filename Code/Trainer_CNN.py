@@ -29,7 +29,7 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=Fals
 # class_names = ['idle', 'shake', 'tap', 'drop', 'lift']
 
 INPUT_AMOUNT = 6
-CLASSES_AMOUNT = 5
+CLASSES_AMOUNT = 6
 EPOCHS = 100
 # ===== MODEL =====
 class IMUNet(nn.Module):
@@ -61,7 +61,7 @@ class IMUNet(nn.Module):
 
         x = torch.flatten(x, 1)
 
-        # self.dropout = nn.Dropout(0.3)
+        self.dropout = nn.Dropout(0.3)
         x = self.fc(x)
         return x
 
