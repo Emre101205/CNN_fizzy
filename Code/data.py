@@ -34,7 +34,7 @@ LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
 # columns (they were full of NaN / missing values in your data).
 # FEATURE_COLUMNS = ['Roll', 'Pitch', 'Yaw', 'Acc X', 'Acc Y', 'Acc Z', 'Gyro X', 'Gyro Y', 'Gyro Z']
-FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
+FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
 
 # How long each "window" is, in samples.
 # Your data is recorded at ~100 samples per second,
