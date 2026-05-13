@@ -57,6 +57,7 @@ class IMUNet(nn.Module):
 
         x = F.relu(self.bn3(self.conv3(x)))
         x = F.avg_pool1d(x, 4)
+        # x = F.max_pool1d(x,4)
 
         x = torch.flatten(x, 1)
 
