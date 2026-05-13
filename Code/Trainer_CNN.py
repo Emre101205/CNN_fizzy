@@ -26,11 +26,11 @@ train_data, test_data = random_split(full_dataset, [n_train, n_test])
 train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
 test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=False)
 
-# class_names = ['idle', 'shake', 'tap', 'spin', 'drop']
+# class_names = ['idle', 'shake', 'tap', 'drop', 'lift']
 
 INPUT_AMOUNT = 6
 CLASSES_AMOUNT = 5
-EPOCHS = 200
+EPOCHS = 100
 # ===== MODEL =====
 class IMUNet(nn.Module):
     def __init__(self):
@@ -41,8 +41,12 @@ class IMUNet(nn.Module):
         self.bn2 = nn.BatchNorm1d(32)
         self.conv3 = nn.Conv1d(32, 32, kernel_size=3, padding=1)
         self.bn3 = nn.BatchNorm1d(32)
-        self.dropout = nn.Dropout(0.3)
+        # self.dropout = nn.Dropout(0.3)
         self.fc = nn.Linear(32, CLASSES_AMOUNT)
+
+
+#Met batchnorm
+
 
     def forward(self, x):
         x = F.relu(self.bn1(self.conv1(x)))
@@ -56,9 +60,28 @@ class IMUNet(nn.Module):
 
         x = torch.flatten(x, 1)
 
-        self.dropout = nn.Dropout(0.3)
+        # self.dropout = nn.Dropout(0.3)
         x = self.fc(x)
         return x
+
+
+# Zonder batchnorm
+
+    # def forward(self, x):
+    #     x = F.relu(self.conv1(x))
+    #     x = F.max_pool1d(x, 4)
+
+    #     x = F.relu(self.conv2(x))
+    #     x = F.max_pool1d(x, 4)
+
+    #     x = F.relu(self.conv3(x))
+    #     x = F.avg_pool1d(x, 4)
+
+    #     x = torch.flatten(x, 1)
+
+    #     self.dropout = nn.Dropout(0.3)
+    #     x = self.fc(x)
+    #     return x
 
 net = IMUNet().to(device)
 print(f'Model on: {next(net.parameters()).device}')
@@ -66,7 +89,7 @@ print(f'Model on: {next(net.parameters()).device}')
 loss_function = nn.CrossEntropyLoss()
 optimizer = optim.Adam(net.parameters(), lr=0.001)
 # optimizer = optim.AdamW(net.parameters(), lr=0.001, weight_decay=1e-4)
-scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS)
+# scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS)
 # ===== TRAINING =====
 for epoch in range(EPOCHS):
     t0 = time.time()
