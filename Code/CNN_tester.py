@@ -7,8 +7,8 @@ from data import GestureDataset
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-CLASSES_AMOUNT = 5
-INPUT_AMOUNT = 6
+CLASSES_AMOUNT = 4
+INPUT_AMOUNT = 7
 
 
 # ===== MODEL (same as in train.py) =====
@@ -48,14 +48,15 @@ class IMUNet(nn.Module):
 
 # ===== LOAD TRAINED MODEL =====
 net = IMUNet().to(device)
-net.load_state_dict(torch.load('Trained_005.pth', map_location=device))
+net.load_state_dict(torch.load('Trained_017.pth', map_location=device))
 net.eval()
 
 # ===== LOAD NEW DATA =====
 test_dataset = GestureDataset()   # points at whatever folder data.py is set to
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
-class_names = ['idle', 'shake', 'tap', 'spin', 'drop']
+# class_names = ['idle', 'shake', 'tap', 'spin', 'drop']
+class_names = ['idle', 'tap', 'lift', 'kick']
 
 # ===== EVALUATE =====
 CONFIDENCE_THRESHOLD = 0.90
