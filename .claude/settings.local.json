@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(python -c \"import numpy as np; print\\('v7 mean:', np.load\\('imu_mean_v7.npy'\\).shape, 'v7 std:', np.load\\('imu_std_v7.npy'\\).shape, 'v8 mean:', np.load\\('imu_mean_v8.npy'\\).shape, 'v8 std:', np.load\\('imu_std_v8.npy'\\).shape\\)\")",
-      "Bash(python -c \"import numpy as np; import os; p = r'c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\CNN'; files = [f for f in os.listdir\\(p\\) if f.endswith\\('.npy'\\)]; [print\\(f, np.load\\(os.path.join\\(p,f\\)\\).shape\\) for f in files]\")"
+      "Bash(python -c \"import numpy as np; import os; p = r'c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\CNN'; files = [f for f in os.listdir\\(p\\) if f.endswith\\('.npy'\\)]; [print\\(f, np.load\\(os.path.join\\(p,f\\)\\).shape\\) for f in files]\")",
+      "PowerShell(Get-Content \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\CNN\\\\CNN_fizzy_ground.py\" -Encoding Byte -TotalCount 4 | ForEach-Object { $_.ToString\\(\"X2\"\\) })"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__"
     ]
   }
 }
