@@ -24,17 +24,20 @@ from torch.utils.data import Dataset, DataLoader
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_v6')
+RECORDINGS_DIR = os.path.join(SCRIPT_DIR, 'recordings_v7')
 
 # Map gesture names to numbers. The CNN works with numbers, not text.
 # Idle = 0, Shake = 1, Tap = 2, UpDown = 3
-LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
+# LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
+
+#Labels for random movement
+LABELS = {'idle' : 0, 'tap': 1 , 'lift': 2, 'kick': 3}
 
 # Which columns from the CSV to actually use as inputs.
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
 # columns (they were full of NaN / missing values in your data).
-FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
-# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
+# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
+FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
 
 # How long each "window" is, in samples.
 # Your data is recorded at ~100 samples per second,
