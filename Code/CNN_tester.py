@@ -48,7 +48,7 @@ class IMUNet(nn.Module):
 
 # ===== LOAD TRAINED MODEL =====
 net = IMUNet().to(device)
-net.load_state_dict(torch.load('Trained_017.pth', map_location=device))
+net.load_state_dict(torch.load('Trained_018.pth', map_location=device))
 net.eval()
 
 # ===== LOAD NEW DATA =====
@@ -62,7 +62,13 @@ class_names = ['idle', 'tap', 'lift', 'kick']
 CONFIDENCE_THRESHOLD = 0.90
 num_classes = 4
 matrix = torch.zeros(num_classes, num_classes, dtype=torch.int64)
-unsure_count = 0
+
+total_correct = 0
+total_count = 0
+conf_correct = 0
+conf_count = 0
+noconf_correct = 0
+noconf_count = 0
 
 net.eval()
 with torch.no_grad():
@@ -71,15 +77,36 @@ with torch.no_grad():
         probs = F.softmax(net(inputs), dim=1)
         max_probs, predicted = torch.max(probs, dim=1)
         is_confident = max_probs >= CONFIDENCE_THRESHOLD
-        
-        unsure_count += (~is_confident).sum().item()
-        
-        # Only fill in the matrix for confident predictions
+
+        correct = predicted == labels
+        total_correct += correct.sum().item()
+        total_count += len(labels)
+
+        conf_mask = is_confident
+        conf_correct += (correct & conf_mask).sum().item()
+        conf_count += conf_mask.sum().item()
+
+        noconf_mask = ~is_confident
+        noconf_correct += (correct & noconf_mask).sum().item()
+        noconf_count += noconf_mask.sum().item()
+
         for t, p, c in zip(labels.cpu(), predicted.cpu(), is_confident.cpu()):
             if c:
                 matrix[t.item(), p.item()] += 1
 
+unsure_count = noconf_count
 print(f"\n{unsure_count} predictions marked unsure (below {CONFIDENCE_THRESHOLD})")
+
+print(f"\nAccuracy (total):          {total_correct}/{total_count} = {100*total_correct/total_count:.1f}%")
+if conf_count > 0:
+    print(f"Accuracy (confident):      {conf_correct}/{conf_count} = {100*conf_correct/conf_count:.1f}%")
+else:
+    print("Accuracy (confident):      no confident predictions")
+if noconf_count > 0:
+    print(f"Accuracy (no confidence):  {noconf_correct}/{noconf_count} = {100*noconf_correct/noconf_count:.1f}%")
+else:
+    print("Accuracy (no confidence):  no low-confidence predictions")
+
 print("\nConfusion Matrix (confident predictions only)")
 print(f"{'':>8}" + "".join(f"{name:>8}" for name in class_names))
 for i, name in enumerate(class_names):
