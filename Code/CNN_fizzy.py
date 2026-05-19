@@ -8,7 +8,7 @@ from datetime import datetime
 from torch.utils.data import random_split
 
 INPUT_AMOUNT = 6
-CLASSES_AMOUNT = 4
+CLASSES_AMOUNT = 5
 
 
 # ===== MODEL =====
