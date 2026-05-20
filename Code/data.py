@@ -23,7 +23,7 @@ from torch.utils.data import Dataset, DataLoader
 # =============================================================
 
 # Version of the data
-version = '7'
+version = '9'
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -44,8 +44,8 @@ LABELS = {'idle' : 0, 'tap': 1 , 'lift': 2, 'kick': 3}
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
 # columns (they were full of NaN / missing values in your data).
 # FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
-# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
-FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input', 'acc_mag', 'gyro_mag']
+FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
+# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input', 'acc_mag', 'gyro_mag']
 
 # How long each "window" is, in samples.
 # Your data is recorded at ~100 samples per second,
@@ -110,6 +110,7 @@ def cut_into_windows(recording, window_size, stride):
 # STEP 4: The Dataset class — what PyTorch will use for training
 # =============================================================
 
+
 class GestureDataset(Dataset):
     """
     A PyTorch Dataset that holds all our gesture windows + their labels.
@@ -173,8 +174,8 @@ class GestureDataset(Dataset):
         X = (X - mean) / std
 
         # Saves the mean and std of the data
-        np.save(f'imu_mean_v{version}_ext.npy', mean)
-        np.save(f'imu_std_v{version}_ext.npy', std)
+        np.save(f'imu_mean_v{version}.npy', mean)
+        np.save(f'imu_std_v{version}.npy', std)
         print('Saved imu_mean.npy and imu_std.npy')
 
         print(f'mean = {mean}')
