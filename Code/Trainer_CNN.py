@@ -28,7 +28,7 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=Fals
 
 # class_names = ['idle', 'shake', 'tap', 'drop', 'lift']
 
-INPUT_AMOUNT = 6
+INPUT_AMOUNT = 9
 CLASSES_AMOUNT = 4
 EPOCHS = 100
 # ===== MODEL =====
@@ -42,27 +42,33 @@ class IMUNet(nn.Module):
         self.conv3 = nn.Conv1d(32, 32, kernel_size=3, padding=1)
         self.bn3 = nn.BatchNorm1d(32)
         self.dropout = nn.Dropout(0.3)
-        self.fc = nn.Linear(32, CLASSES_AMOUNT)
+        self.fc = nn.Linear(32, CLASSES_AMOUNT) #MAX POOL 4
+        # self.fc = nn.Linear(256, CLASSES_AMOUNT) #MAX POOL 2
 
 
 #Met batchnorm
 
 
     def forward(self, x):
+        # in:  (batch, 6, 64)
         x = F.relu(self.bn1(self.conv1(x)))
         x = F.max_pool1d(x, 4)
+        # out: (batch, 16, 32)
 
         x = F.relu(self.bn2(self.conv2(x)))
         x = F.max_pool1d(x, 4)
+        # out: (batch, 32, 16)
 
         x = F.relu(self.bn3(self.conv3(x)))
         x = F.avg_pool1d(x, 4)
-        # x = F.max_pool1d(x,4)
+        # out: (batch, 32, 8)
 
         x = torch.flatten(x, 1)
+        # out: (batch, 256)
 
         x = self.dropout(x)
         x = self.fc(x)
+        # out: (batch, 4)  — one logit per class
         return x
 
 

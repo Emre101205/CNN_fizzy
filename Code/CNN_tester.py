@@ -7,8 +7,8 @@ from data import GestureDataset
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+INPUT_AMOUNT = 9
 CLASSES_AMOUNT = 4
-INPUT_AMOUNT = 7
 
 
 # ===== MODEL (same as in train.py) =====
@@ -22,33 +22,35 @@ class IMUNet(nn.Module):
         self.conv3 = nn.Conv1d(32, 32, kernel_size=3, padding=1)
         self.bn3 = nn.BatchNorm1d(32)
         # self.dropout = nn.Dropout(0.3)
-        self.fc = nn.Linear(32, CLASSES_AMOUNT)
+        self.fc = nn.Linear(32, CLASSES_AMOUNT) #MAX POOL 4
+        # self.fc = nn.Linear(256, CLASSES_AMOUNT) #MAX POOL 2
 
 
-#Met batchnorm
+# Met batchnorm
 
 
     def forward(self, x):
         x = F.relu(self.bn1(self.conv1(x)))
-        x = F.max_pool1d(x, 4)
+        # x = F.max_pool1d(x, 2)
+        x = F.max_pool1d(x,4)
 
         x = F.relu(self.bn2(self.conv2(x)))
-        x = F.max_pool1d(x, 4)
+        # x = F.max_pool1d(x, 2)
+        x = F.max_pool1d(x,4)
 
         x = F.relu(self.bn3(self.conv3(x)))
-        x = F.avg_pool1d(x, 4)
-        # x = F.max_pool1d(x,4)
+        # x = F.avg_pool1d(x, 2)
+        x = F.avg_pool1d(x,4)
 
         x = torch.flatten(x, 1)
-
-        self.dropout = nn.Dropout(0.3)
+        
         x = self.fc(x)
         return x
 
 
 # ===== LOAD TRAINED MODEL =====
 net = IMUNet().to(device)
-net.load_state_dict(torch.load('Trained_018.pth', map_location=device))
+net.load_state_dict(torch.load('Trained_021.pth', map_location=device))
 net.eval()
 
 # ===== LOAD NEW DATA =====
@@ -74,6 +76,7 @@ net.eval()
 with torch.no_grad():
     for inputs, labels in test_loader:
         inputs, labels = inputs.to(device), labels.to(device)
+        # inputs = inputs[:, :INPUT_AMOUNT, :]  # trim to channels this model was trained on
         probs = F.softmax(net(inputs), dim=1)
         max_probs, predicted = torch.max(probs, dim=1)
         is_confident = max_probs >= CONFIDENCE_THRESHOLD

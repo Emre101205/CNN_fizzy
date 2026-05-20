@@ -44,7 +44,8 @@ LABELS = {'idle' : 0, 'tap': 1 , 'lift': 2, 'kick': 3}
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
 # columns (they were full of NaN / missing values in your data).
 # FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
-FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
+# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
+FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input', 'acc_mag', 'gyro_mag']
 
 # How long each "window" is, in samples.
 # Your data is recorded at ~100 samples per second,
@@ -172,8 +173,8 @@ class GestureDataset(Dataset):
         X = (X - mean) / std
 
         # Saves the mean and std of the data
-        np.save(f'imu_mean_v{version}.npy', mean)
-        np.save(f'imu_std_v{version}.npy', std)
+        np.save(f'imu_mean_v{version}_ext.npy', mean)
+        np.save(f'imu_std_v{version}_ext.npy', std)
         print('Saved imu_mean.npy and imu_std.npy')
 
         print(f'mean = {mean}')
