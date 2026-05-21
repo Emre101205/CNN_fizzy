@@ -21,7 +21,7 @@ HOW TO RUN
 ----------
 Put this script in the same folder as:
     CNN_fizzy.py
-    Trained_004.pth
+    Trained_xxx.pth
     imu_mean.npy
     imu_std.npy
 
