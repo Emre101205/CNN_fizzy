@@ -23,7 +23,7 @@ from torch.utils.data import Dataset, DataLoader
 # =============================================================
 
 # Version of the data
-version = '10'
+version = '12'
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -33,11 +33,21 @@ RECORDINGS_DIR = os.path.join(SCRIPT_DIR, f'recordings_v{version}')
 # Idle = 0, Shake = 1, Tap = 2, UpDown = 3
 # LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
 
-#Labels for v8
-LABELS = {'idle' : 0, 'tap': 1 , 'shake': 2, 'drop': 3}
+
 
 #Labels for v7
 # LABELS = {'idle' : 0, 'tap': 1 , 'lift': 2, 'kick': 3}
+
+#Labels for v8
+# LABELS = {'idle' : 0, 'tap': 1 , 'shake': 2, 'drop': 3}
+
+#Labels for v11
+# LABELS = {'idle' : 0, 'lift': 1, 'kick': 2}
+
+#Labels for v12
+LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
+
+
 
 
 # Which columns from the CSV to actually use as inputs.
