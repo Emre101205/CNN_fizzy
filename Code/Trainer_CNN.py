@@ -28,8 +28,8 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=Fals
 
 # class_names = ['idle', 'shake', 'tap', 'drop', 'lift']
 
-INPUT_AMOUNT = 6
-CLASSES_AMOUNT = 6
+INPUT_AMOUNT = 7
+CLASSES_AMOUNT = 3
 EPOCHS = 100
 # ===== MODEL =====
 class IMUNet(nn.Module):
