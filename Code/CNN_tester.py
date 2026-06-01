@@ -2,13 +2,20 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
-
+import os
 from data import GestureDataset
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-INPUT_AMOUNT = 9
-CLASSES_AMOUNT = 4
+INPUT_AMOUNT = 7
+CLASSES_AMOUNT = 6
+
+model_number = '026'
+
+FILE_PATH  = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(FILE_PATH, 'Models', f'Trained_{model_number}.pth')
+
+
 
 
 # ===== MODEL (same as in train.py) =====
@@ -50,19 +57,19 @@ class IMUNet(nn.Module):
 
 # ===== LOAD TRAINED MODEL =====
 net = IMUNet().to(device)
-net.load_state_dict(torch.load('Trained_021.pth', map_location=device))
+net.load_state_dict(torch.load(MODEL_PATH, map_location=device))
 net.eval()
 
 # ===== LOAD NEW DATA =====
 test_dataset = GestureDataset()   # points at whatever folder data.py is set to
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
-# class_names = ['idle', 'shake', 'tap', 'spin', 'drop']
-class_names = ['idle', 'tap', 'lift', 'kick']
+class_names = ['idle', 'shake', 'tap', 'drop', 'lift', 'kick']
+# class_names = ['idle',  'lift', 'kick']
 
 # ===== EVALUATE =====
 CONFIDENCE_THRESHOLD = 0.90
-num_classes = 4
+num_classes = CLASSES_AMOUNT
 matrix = torch.zeros(num_classes, num_classes, dtype=torch.int64)
 
 total_correct = 0
