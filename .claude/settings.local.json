@@ -5,7 +5,13 @@
       "Bash(python -c \"import numpy as np; import os; p = r'c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\CNN'; files = [f for f in os.listdir\\(p\\) if f.endswith\\('.npy'\\)]; [print\\(f, np.load\\(os.path.join\\(p,f\\)\\).shape\\) for f in files]\")",
       "PowerShell(Get-Content \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\CNN\\\\CNN_fizzy_ground.py\" -Encoding Byte -TotalCount 4 | ForEach-Object { $_.ToString\\(\"X2\"\\) })",
       "Bash(python -c \"import numpy as np; m=np.load\\('c:/Users/emre_/OneDrive/GitHub/CNN_fizzy/Code/Mean, std/imu_mean_v13.npy'\\); print\\('shape:', m.shape\\)\")",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "PowerShell(ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v17\" | Select-Object -ExpandProperty Name | ForEach-Object { $_ -replace '[0-9_]+\\\\.csv$', '' } | Sort-Object -Unique)",
+      "PowerShell(ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\CNN\\\\Models\\\\\")",
+      "PowerShell(ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v12\" | Select-Object -ExpandProperty Name | ForEach-Object { $_ -replace '[0-9_]+\\\\.csv$', '' } | Sort-Object -Unique; echo \"---\"; ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v12\" | Measure-Object | Select-Object -ExpandProperty Count)",
+      "PowerShell(ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\CNN\\\\Mean, std\\\\\")",
+      "PowerShell(ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v16\" | Select-Object -ExpandProperty Name | ForEach-Object { $_ -replace '[0-9_]+\\\\.csv$', '' } | Sort-Object -Unique; echo \"---count:\"; ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v16\" | Measure-Object | Select-Object -ExpandProperty Count)",
+      "PowerShell(foreach \\($v in @\\('12','16'\\)\\) { $counts = @{}; ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v$v\" | ForEach-Object { $prefix = $_.Name -replace '[0-9_]+\\\\.csv$', ''; if \\(-not $counts[$prefix]\\) { $counts[$prefix] = 0 }; $counts[$prefix]++ }; echo \"=== v$v ===\"; $counts.GetEnumerator\\(\\) | Sort-Object Name | ForEach-Object { \"$\\($_.Key\\): $\\($_.Value\\)\" } })"
     ],
     "additionalDirectories": [
       "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__"

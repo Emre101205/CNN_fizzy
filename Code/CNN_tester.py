@@ -3,14 +3,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 import os
-from data import GestureDataset
+from datac import GestureDataset
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 INPUT_AMOUNT = 7
-CLASSES_AMOUNT = 6
+CLASSES_AMOUNT = 3
 
-model_number = '026'
+model_number = '031'
 
 FILE_PATH  = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(FILE_PATH, 'Models', f'Trained_{model_number}.pth')

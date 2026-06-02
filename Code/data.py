@@ -23,7 +23,7 @@ from torch.utils.data import Dataset, DataLoader
 # =============================================================
 
 # Version of the data
-version = '16'
+version = '20'
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -38,16 +38,13 @@ RECORDINGS_DIR = os.path.join(SCRIPT_DIR, f'recordings_v{version}')
 #Labels for v7
 # LABELS = {'idle' : 0, 'tap': 1 , 'lift': 2, 'kick': 3}
 
-#Labels for v8
-# LABELS = {'idle' : 0, 'tap': 1 , 'shake': 2, 'drop': 3}
-
-#Labels for V10, 14, 15
+#Labels for V8, 10, 14, 15, 27
 # LABELS = {'idle' : 0, 'tap': 1, 'shake': 2 , 'drop' : 3}
 
 #Labels for v11
 # LABELS = {'idle' : 0, 'lift': 1, 'kick': 2}
 
-#Labels for v12, v13, 16
+#Labels for v12, v13, 16, 20, 21
 LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
 
 
@@ -56,8 +53,8 @@ LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
 # Which columns from the CSV to actually use as inputs.
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
 # columns (they were full of NaN / missing values in your data).
-# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
-FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
+FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
+# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
 # FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input', 'acc_mag', 'gyro_mag']
 
 # How long each "window" is, in samples.
@@ -137,7 +134,7 @@ class GestureDataset(Dataset):
         all_windows = []
         all_labels = []
 
-    
+
         all_csv_paths = glob.glob(os.path.join(RECORDINGS_DIR, '*.csv'))
 
         # Loop through each gesture type (Idle, Shake, Tap, UpDown)
@@ -158,15 +155,16 @@ class GestureDataset(Dataset):
 
             print(f'Found {len(file_paths)} files for "{gesture_name}"')
 
-            # Concatenate all recordings for this class into one long signal,
-            # then slide windows over it so no data is thrown away.
-            recordings = [load_one_csv(p) for p in file_paths]
-            combined = np.concatenate(recordings, axis=0)
-            windows = cut_into_windows(combined, WINDOW_SIZE, WINDOW_STRIDE)
+            # Process each file individually
+            for path in file_paths:
+                recording = load_one_csv(path)
+                windows = cut_into_windows(recording, WINDOW_SIZE, WINDOW_STRIDE)
 
-            labels = np.full(len(windows), label_number, dtype=np.int64)
-            all_windows.append(windows)
-            all_labels.append(labels)
+                # Make a label for each window (all the same gesture)
+                labels = np.full(len(windows), label_number, dtype=np.int64)
+
+                all_windows.append(windows)
+                all_labels.append(labels)
 
         # Combine everything into two big arrays
         # X shape: (total_windows, window_size, num_features) e.g. (N, 200, 6)
