@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 from torch.utils.data import random_split
 
-from datac import GestureDataset
+from data2 import GestureDataset
 
 # ===== DIAGNOSTICS =====
 print(f'Python: {sys.executable}')
@@ -71,24 +71,6 @@ class IMUNet(nn.Module):
         # out: (batch, 4)  — one logit per class
         return x
 
-
-# Zonder batchnorm
-
-    # def forward(self, x):
-    #     x = F.relu(self.conv1(x))
-    #     x = F.max_pool1d(x, 4)
-
-    #     x = F.relu(self.conv2(x))
-    #     x = F.max_pool1d(x, 4)
-
-    #     x = F.relu(self.conv3(x))
-    #     x = F.avg_pool1d(x, 4)
-
-    #     x = torch.flatten(x, 1)
-
-    #     self.dropout = nn.Dropout(0.3)
-    #     x = self.fc(x)
-    #     return x
 
 net = IMUNet().to(device)
 print(f'Model on: {next(net.parameters()).device}')

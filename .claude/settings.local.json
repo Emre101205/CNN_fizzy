@@ -11,7 +11,18 @@
       "PowerShell(ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v12\" | Select-Object -ExpandProperty Name | ForEach-Object { $_ -replace '[0-9_]+\\\\.csv$', '' } | Sort-Object -Unique; echo \"---\"; ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v12\" | Measure-Object | Select-Object -ExpandProperty Count)",
       "PowerShell(ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\CNN\\\\Mean, std\\\\\")",
       "PowerShell(ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v16\" | Select-Object -ExpandProperty Name | ForEach-Object { $_ -replace '[0-9_]+\\\\.csv$', '' } | Sort-Object -Unique; echo \"---count:\"; ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v16\" | Measure-Object | Select-Object -ExpandProperty Count)",
-      "PowerShell(foreach \\($v in @\\('12','16'\\)\\) { $counts = @{}; ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v$v\" | ForEach-Object { $prefix = $_.Name -replace '[0-9_]+\\\\.csv$', ''; if \\(-not $counts[$prefix]\\) { $counts[$prefix] = 0 }; $counts[$prefix]++ }; echo \"=== v$v ===\"; $counts.GetEnumerator\\(\\) | Sort-Object Name | ForEach-Object { \"$\\($_.Key\\): $\\($_.Value\\)\" } })"
+      "PowerShell(foreach \\($v in @\\('12','16'\\)\\) { $counts = @{}; ls \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\recordings_v$v\" | ForEach-Object { $prefix = $_.Name -replace '[0-9_]+\\\\.csv$', ''; if \\(-not $counts[$prefix]\\) { $counts[$prefix] = 0 }; $counts[$prefix]++ }; echo \"=== v$v ===\"; $counts.GetEnumerator\\(\\) | Sort-Object Name | ForEach-Object { \"$\\($_.Key\\): $\\($_.Value\\)\" } })",
+      "Bash(python data2.py)",
+      "Bash(python -m py_compile \"BEP code/CNN/CNN_pytorch2.py\")",
+      "Bash(where python *)",
+      "Bash(\"C:/Users/emre_/AppData/Local/Programs/Python/Python311/python.exe\" -c \"import PyQt6; print\\('Py311 PyQt6 ok'\\)\")",
+      "Bash(\"C:/Users/emre_/AppData/Local/Programs/Python/Python311/python.exe\" -c \"import pyqtgraph; print\\('Py311 pyqtgraph', pyqtgraph.__version__\\)\")",
+      "Bash(\"C:/Users/emre_/AppData/Local/Programs/Python/Python311/python.exe\" -c \"import matplotlib; print\\('Py311 matplotlib', matplotlib.__version__\\)\")",
+      "Bash(\"C:/Users/emre_/OneDrive/GitHub/CNN_fizzy/.venv/Scripts/python.exe\" -m pip list)",
+      "Bash(\"C:/Users/emre_/OneDrive/GitHub/CNN_fizzy/.venv/Scripts/python.exe\" -m py_compile CNN_pytorch2.py)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('LiveClassifyDashboard.py',encoding='utf-8'\\).read\\(\\)\\); ast.parse\\(open\\('settings.py',encoding='utf-8'\\).read\\(\\)\\); print\\('OK'\\)\")",
+      "Bash(python -m py_compile LiveClassifyDashboard.py)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('LiveClassifyDashboard.py',encoding='utf-8'\\).read\\(\\)\\); print\\('OK'\\)\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__"
