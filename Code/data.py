@@ -23,7 +23,7 @@ from torch.utils.data import Dataset, DataLoader
 # =============================================================
 
 # Version of the data
-version = '20'
+version = 'test'
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))

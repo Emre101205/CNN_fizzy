@@ -24,7 +24,11 @@
       "Bash(python -m py_compile LiveClassifyDashboard.py)",
       "Bash(python -c \"import ast; ast.parse\\(open\\('LiveClassifyDashboard.py',encoding='utf-8'\\).read\\(\\)\\); print\\('OK'\\)\")",
       "PowerShell(Get-ChildItem \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\" | Where-Object { $_.Extension -eq '.py' })",
-      "Bash(python -m py_compile panels/classification_analysis_panel.py panels/live_classification_panel.py)"
+      "Bash(python -m py_compile panels/classification_analysis_panel.py panels/live_classification_panel.py)",
+      "Bash(python -m py_compile managers/analyse_manager.py managers/graph_manager.py panels/analyse_panel.py)",
+      "Bash(python -c \"import torch,glob,os; [print\\(os.path.basename\\(p\\), '-> conv1.weight', tuple\\(torch.load\\(p,map_location='cpu'\\)['conv1.weight'].shape\\), '| fc', tuple\\(torch.load\\(p,map_location='cpu'\\)['fc.weight'].shape\\)\\) for p in sorted\\(glob.glob\\('Models/Trained_03*.pth'\\)\\)]\")",
+      "Bash(python -m py_compile managers/classification_analysis_manager.py)",
+      "Bash(python -m py_compile panels/live_classification_panel.py managers/classification_analysis_manager.py)"
     ],
     "additionalDirectories": [
       "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__"

@@ -31,6 +31,8 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=Fals
 INPUT_AMOUNT = 6
 CLASSES_AMOUNT = 6
 EPOCHS = 100
+
+
 # ===== MODEL =====
 class IMUNet(nn.Module):
     def __init__(self):
