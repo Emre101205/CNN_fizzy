@@ -23,7 +23,7 @@ from torch.utils.data import Dataset, DataLoader
 # =============================================================
 
 # Version of the data
-version = '18'
+version = '21'
 
 # Folder where your CSV files live (next to this script, in 'recordings/')
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -45,10 +45,10 @@ RECORDINGS_DIR = os.path.join(SCRIPT_DIR, f'recordings_v{version}')
 # LABELS = {'idle' : 0, 'tap': 1, 'shake': 2 , 'drop' : 3}
 
 # Labels for v11
-LABELS = {'idle' : 0, 'lift': 1, 'kick': 2}
+# LABELS = {'idle' : 0, 'lift': 1, 'kick': 2}
 
 #Labels for v12, v13, 16, 20, 21
-# LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
+LABELS = {'idle' : 0, 'shake': 1, 'tap': 2 , 'drop' : 3, 'lift': 4, 'kick': 5}
 
 
 
@@ -56,8 +56,8 @@ LABELS = {'idle' : 0, 'lift': 1, 'kick': 2}
 # Which columns from the CSV to actually use as inputs.
 # We skip 'timestamp' (not useful as a feature) and the Gyro/Magnitude
 # columns (they were full of NaN / missing values in your data).
-# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
-FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
+FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z']
+# FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input']
 # FEATURE_COLUMNS = ['acc_x', 'acc_y', 'acc_z', 'gyro_x','gyro_y' ,'gyro_z', 'motor_input', 'acc_mag', 'gyro_mag']
 
 # How long each "window" is, in samples.

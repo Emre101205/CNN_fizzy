@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 from torch.utils.data import random_split
 
-from data2 import GestureDataset
+from datac import GestureDataset
 
 # ===== DIAGNOSTICS =====
 print(f'Python: {sys.executable}')
