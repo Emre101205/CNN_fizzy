@@ -26,7 +26,8 @@ from torch.utils.data import Dataset, DataLoader
 # =============================================================
 
 # Which test folders to load. All of these are combined into one dataset.
-TEST_FOLDERS = ['Test_01', 'Test_02', 'Test_03', 'Test_04']
+TEST_FOLDERS = ['Test_01', 'Test_02', 'Test_03', 'Test_04', 'Test_05' , 'Test_06' , 'Test_07']
+
 
 # Which half of each test folder to use: 'IDLE' or 'RANDOM' (never both).
 SUBSET = 'IDLE'

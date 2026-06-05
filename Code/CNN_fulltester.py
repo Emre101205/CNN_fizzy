@@ -11,13 +11,13 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 INPUT_AMOUNT = 6
 CLASSES_AMOUNT = 6
 
-model_number = '025'
+model_number = '039'
 
 # Data version of the normalization the model was trained with. The saved stats live
 # in "Mean, std" as imu_mean_v{DATA_VERSION}.npy / imu_std_v{DATA_VERSION}.npy. Set
 # this to match the model so the test inputs are normalized exactly like training,
 # instead of using per-batch stats computed from the test set.
-DATA_VERSION = '12'
+DATA_VERSION = '21'
 
 FILE_PATH  = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(FILE_PATH, 'Models', f'Trained_{model_number}.pth')
@@ -85,7 +85,7 @@ class_names = ['idle', 'shake', 'tap', 'drop', 'lift', 'kick']
 # class_names = ['idle',  'lift', 'kick']
 
 # ===== EVALUATE =====
-CONFIDENCE_THRESHOLD = 0.8
+CONFIDENCE_THRESHOLD = 0.5
 num_classes = CLASSES_AMOUNT
 matrix = torch.zeros(num_classes, num_classes, dtype=torch.int64)
 
@@ -126,7 +126,10 @@ with torch.no_grad():
                 matrix[t.item(), p.item()] += 1
 
 unsure_count = noconf_count
+noconf_idle_count = noconf_count - noconf_nonidle_count  # unsure predictions whose true label is idle
 print(f"\n{unsure_count} predictions marked unsure (below {CONFIDENCE_THRESHOLD})")
+print(f"  of which unsure & idle:    {noconf_idle_count}")
+print(f"  of which unsure & gesture: {noconf_nonidle_count}  (missed real gestures)")
 
 print(f"\nAccuracy (total):          {total_correct}/{total_count} = {100*total_correct/total_count:.1f}%")
 if conf_count > 0:
