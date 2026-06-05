@@ -54,7 +54,9 @@
       "Bash(python -c \"import json;d=json.load\\(open\\(r'c:/Users/emre_/OneDrive/GitHub/Fizzy-code/lunch_testing/test_labeld/window_size_64_labels/Test_07/IDLE07/IDLETEST_07_labels.json'\\)\\);lw=d['labeled_windows'];import itertools;print\\(dict\\(itertools.islice\\(lw.items\\(\\),5\\)\\)\\)\")",
       "Bash(python -c \"import json;d=json.load\\(open\\(r'c:/Users/emre_/OneDrive/GitHub/Fizzy-code/lunch_testing/test_labeld/window_size_64_labels/Test_07/IDLE07/IDLETEST_07_labels.json'\\)\\);lw=d['labeled_windows'];from collections import Counter;print\\(Counter\\(lw.values\\(\\)\\)\\)\")",
       "Bash(python3 -c ' *)",
-      "Bash(.venv/Scripts/python.exe -c ' *)"
+      "Bash(.venv/Scripts/python.exe -c ' *)",
+      "Bash(.venv/Scripts/python.exe -c \"import sklearn, matplotlib; print\\('sklearn', sklearn.__version__\\); print\\('matplotlib', matplotlib.__version__\\)\")",
+      "Bash(.venv/Scripts/python.exe -m py_compile Code/Trainer_CNN.py)"
     ],
     "additionalDirectories": [
       "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__",

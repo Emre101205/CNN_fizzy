@@ -6,8 +6,12 @@ import torch.optim as optim
 import time
 from datetime import datetime
 from torch.utils.data import random_split
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
 
 from datac import GestureDataset
+from datac import LABELS
 
 # ===== DIAGNOSTICS =====
 print(f'Python: {sys.executable}')
@@ -18,10 +22,19 @@ print(f'GPU: {torch.cuda.get_device_name(0)}')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # ===== DATA =====
+USE_ALL_DATA = True  # True -> train on 100% of data (no held-out test set)
+
 full_dataset = GestureDataset()
-n_test = int(0.2 * len(full_dataset))
-n_train = len(full_dataset) - n_test
-train_data, test_data = random_split(full_dataset, [n_train, n_test])
+
+if USE_ALL_DATA:
+    # Train on 100% of the data; evaluate on the same data (no separate test set)
+    train_data = full_dataset
+    test_data = full_dataset
+else:
+    # 80/20 train/test split
+    n_test = int(0.2 * len(full_dataset))
+    n_train = len(full_dataset) - n_test
+    train_data, test_data = random_split(full_dataset, [n_train, n_test])
 
 train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
 test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=False)
@@ -99,7 +112,7 @@ filename = f'trained_imu_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pth'
 torch.save(net.state_dict(), filename)
 print(f'Saved to {filename}')
 
-# ===== EVALUATION =====
+#===== EVALUATION =====
 
 # CONFIDENCE_THRESHOLD = 0.90   # only count a prediction if it's at least 90% sure
 
@@ -109,27 +122,34 @@ print(f'Saved to {filename}')
 # confident = 0      # how many predictions cleared the threshold
 # unsure = 0         # how many we threw out as "not sure enough"
 
+# all_true = []      # every true label (for the confusion matrix)
+# all_pred = []      # every predicted label, regardless of confidence
+
 # with torch.no_grad():
 #     for inputs, labels in test_loader:
 #         inputs, labels = inputs.to(device), labels.to(device)
 #         outputs = net(inputs)
-        
+
 #         # Convert raw logits to probabilities (each row sums to 1)
 #         probs = F.softmax(outputs, dim=1)
-        
+
 #         # Get both the top probability AND which class it belongs to
 #         max_probs, predicted = torch.max(probs, dim=1)
-        
+
 #         # Build a True/False mask: True where confidence ≥ threshold
 #         is_confident = max_probs >= CONFIDENCE_THRESHOLD
-        
+
 #         # Tally
 #         total     += labels.size(0)
 #         confident += is_confident.sum().item()
 #         unsure    += (~is_confident).sum().item()
-        
+
 #         # Only count something as "correct" if (a) we were confident AND (b) we got it right
 #         correct += ((predicted == labels) & is_confident).sum().item()
+
+#         # Keep the raw predictions/labels for the confusion matrix
+#         all_true.extend(labels.cpu().tolist())
+#         all_pred.extend(predicted.cpu().tolist())
 
 # print(f'Total windows tested:       {total}')
 # print(f'Confident predictions:      {confident}  ({100*confident/total:.1f}%)')
@@ -138,3 +158,33 @@ print(f'Saved to {filename}')
 # if confident > 0:
 #     print(f'Accuracy among confident:   {100*correct/confident:.2f}%')
 # print(f'Accuracy over all windows:  {100*correct/total:.2f}%')
+
+# # ===== CONFUSION MATRIX =====
+# # Class names in label order (0, 1, 2, ...) taken from the active LABELS map.
+# class_names = [name for name, _ in sorted(LABELS.items(), key=lambda kv: kv[1])]
+# labels_idx = list(range(len(class_names)))
+
+# cm = confusion_matrix(all_true, all_pred, labels=labels_idx)
+
+# # Print it as text (rows = true class, columns = predicted class)
+# print('\nConfusion matrix (rows = true, cols = predicted):')
+# header = 'true\\pred'.ljust(10) + ''.join(n[:8].rjust(9) for n in class_names)
+# print(header)
+# for i, name in enumerate(class_names):
+#     row = name[:9].ljust(10) + ''.join(str(v).rjust(9) for v in cm[i])
+#     print(row)
+
+# # Per-class precision / recall / f1
+# print('\nClassification report:')
+# print(classification_report(all_true, all_pred, labels=labels_idx,
+#                             target_names=class_names, zero_division=0))
+
+# # Save a plotted version next to the model checkpoint
+# disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
+# fig, ax = plt.subplots(figsize=(7, 6))
+# disp.plot(ax=ax, cmap='Blues', xticks_rotation=45, colorbar=True)
+# ax.set_title('Confusion matrix (test set)')
+# fig.tight_layout()
+# cm_filename = filename.replace('.pth', '_confusion.png')
+# fig.savefig(cm_filename, dpi=150)
+# print(f'Saved confusion matrix plot to {cm_filename}')

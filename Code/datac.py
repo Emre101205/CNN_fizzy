@@ -44,7 +44,7 @@ RECORDINGS_DIR = os.path.join(SCRIPT_DIR, f'recordings_v{version}')
 #Labels for V10, 14, 15
 # LABELS = {'idle' : 0, 'tap': 1, 'shake': 2 , 'drop' : 3}
 
-# Labels for v11
+# Labels for v11, 18
 # LABELS = {'idle' : 0, 'lift': 1, 'kick': 2}
 
 #Labels for v12, v13, 16, 20, 21
