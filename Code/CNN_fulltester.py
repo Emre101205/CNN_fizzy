@@ -3,17 +3,28 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 import os
-from data import GestureDataset
+import numpy as np
+from data_fulltest import GestureDataset
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 INPUT_AMOUNT = 6
 CLASSES_AMOUNT = 6
 
-model_number = '034'
+model_number = '025'
+
+# Data version of the normalization the model was trained with. The saved stats live
+# in "Mean, std" as imu_mean_v{DATA_VERSION}.npy / imu_std_v{DATA_VERSION}.npy. Set
+# this to match the model so the test inputs are normalized exactly like training,
+# instead of using per-batch stats computed from the test set.
+DATA_VERSION = '12'
 
 FILE_PATH  = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(FILE_PATH, 'Models', f'Trained_{model_number}.pth')
+
+MEANSTD_DIR = os.path.join(FILE_PATH, 'Mean, std')
+MEAN_PATH   = os.path.join(MEANSTD_DIR, f'imu_mean_v{DATA_VERSION}.npy')
+STD_PATH    = os.path.join(MEANSTD_DIR, f'imu_std_v{DATA_VERSION}.npy')
 
 
 
@@ -61,14 +72,20 @@ net.load_state_dict(torch.load(MODEL_PATH, map_location=device))
 net.eval()
 
 # ===== LOAD NEW DATA =====
-test_dataset = GestureDataset()   # points at whatever folder data.py is set to
+# Load the training-time normalization saved with this model's data version and feed
+# it to the dataset, so inputs are normalized the same way the model was trained.
+norm_mean = np.load(MEAN_PATH).astype(np.float32)
+norm_std  = np.load(STD_PATH).astype(np.float32)
+print(f"Using saved normalization v{DATA_VERSION}: mean {norm_mean.shape}, std {norm_std.shape}")
+
+test_dataset = GestureDataset(mean=norm_mean, std=norm_std)
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 class_names = ['idle', 'shake', 'tap', 'drop', 'lift', 'kick']
 # class_names = ['idle',  'lift', 'kick']
 
 # ===== EVALUATE =====
-CONFIDENCE_THRESHOLD = 0.90
+CONFIDENCE_THRESHOLD = 0.8
 num_classes = CLASSES_AMOUNT
 matrix = torch.zeros(num_classes, num_classes, dtype=torch.int64)
 

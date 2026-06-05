@@ -40,10 +40,25 @@
       "PowerShell($py = \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\.venv\\\\Scripts\\\\python.exe\"; & $py \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\CNN_fulltester.py\")",
       "PowerShell(python -m pip install --upgrade \"pandas>=2.2.2\")",
       "PowerShell(python -c \"import pandas as pd; import numpy as np; print\\('pandas', pd.__version__, '| numpy', np.__version__, '| OK'\\)\")",
-      "PowerShell($venv = \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\.venv\"; Write-Output \"Activate script exists: $\\(Test-Path \"$venv\\\\Scripts\\\\Activate.ps1\"\\)\"; & \"$venv\\\\Scripts\\\\python.exe\" -c \"import sys; print\\('venv python:', sys.version.split\\(\\)[0]\\)\"; & \"$venv\\\\Scripts\\\\python.exe\" -m pip show numpy pandas 2>$null | Select-String -Pattern \"Name|Version\")"
+      "PowerShell($venv = \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\.venv\"; Write-Output \"Activate script exists: $\\(Test-Path \"$venv\\\\Scripts\\\\Activate.ps1\"\\)\"; & \"$venv\\\\Scripts\\\\python.exe\" -c \"import sys; print\\('venv python:', sys.version.split\\(\\)[0]\\)\"; & \"$venv\\\\Scripts\\\\python.exe\" -m pip show numpy pandas 2>$null | Select-String -Pattern \"Name|Version\")",
+      "Bash(grep -rln -i \"classification\" \"/c/Users/emre_/OneDrive/GitHub/Fizzy-code/\" 2>/dev/null | head; echo \"===\"; grep -rln -i \"Classification Analys\" \"/c/Users/emre_/OneDrive/GitHub/\" 2>/dev/null | head)",
+      "Read(//c/Users/emre_/OneDrive/GitHub//**)",
+      "Bash(mkdir -p \"c:/Users/emre_/OneDrive/GitHub/CNN_fizzy/.vscode\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('panels/classification_analysis_panel.py'\\).read\\(\\)\\); print\\('OK'\\)\")",
+      "Bash(python -m py_compile dialog_utils.py panels/analyse_panel.py panels/classification_analysis_panel.py panels/live_classification_panel.py managers/training_manager.py managers/recording_manager.py managers/featurization_manager.py managers/analyse_manager.py managers/classification_analysis_manager.py managers/live_classification_manager.py)",
+      "PowerShell(& \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\managers\\\\graph_manager.py\" \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\managers\\\\classification_analysis_manager.py\" \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\managers\\\\analyse_manager.py\")",
+      "PowerShell(if \\($?\\) { \"OK\" })",
+      "PowerShell(& \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\.venv\\\\Scripts\\\\python.exe\" -m py_compile \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\Fizzy-code\\\\BEP code\\\\managers\\\\classification_analysis_manager.py\")",
+      "Bash(python -m py_compile CNN_fulltester.py data_fulltest.py)",
+      "Bash(python -m py_compile cnn_wrapper.py)",
+      "Bash(python -c \"import json;d=json.load\\(open\\(r'c:/Users/emre_/OneDrive/GitHub/Fizzy-code/lunch_testing/test_labeld/window_size_64_labels/Test_07/IDLE07/IDLETEST_07_labels.json'\\)\\);lw=d['labeled_windows'];import itertools;print\\(dict\\(itertools.islice\\(lw.items\\(\\),5\\)\\)\\)\")",
+      "Bash(python -c \"import json;d=json.load\\(open\\(r'c:/Users/emre_/OneDrive/GitHub/Fizzy-code/lunch_testing/test_labeld/window_size_64_labels/Test_07/IDLE07/IDLETEST_07_labels.json'\\)\\);lw=d['labeled_windows'];from collections import Counter;print\\(Counter\\(lw.values\\(\\)\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(.venv/Scripts/python.exe -c ' *)"
     ],
     "additionalDirectories": [
-      "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__"
+      "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__",
+      "c:\\Users\\emre_\\OneDrive\\GitHub\\CNN_fizzy"
     ]
   }
 }
