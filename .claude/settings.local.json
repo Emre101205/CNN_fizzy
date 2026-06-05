@@ -28,7 +28,19 @@
       "Bash(python -m py_compile managers/analyse_manager.py managers/graph_manager.py panels/analyse_panel.py)",
       "Bash(python -c \"import torch,glob,os; [print\\(os.path.basename\\(p\\), '-> conv1.weight', tuple\\(torch.load\\(p,map_location='cpu'\\)['conv1.weight'].shape\\), '| fc', tuple\\(torch.load\\(p,map_location='cpu'\\)['fc.weight'].shape\\)\\) for p in sorted\\(glob.glob\\('Models/Trained_03*.pth'\\)\\)]\")",
       "Bash(python -m py_compile managers/classification_analysis_manager.py)",
-      "Bash(python -m py_compile panels/live_classification_panel.py managers/classification_analysis_manager.py)"
+      "Bash(python -m py_compile panels/live_classification_panel.py managers/classification_analysis_manager.py)",
+      "Bash(python data_test.py)",
+      "Bash(python -c \"import pandas as pd; print\\(pd.read_csv\\('Test_03/IDLE03/Kick/Kick1.csv', nrows=0\\).columns.tolist\\(\\)\\)\")",
+      "PowerShell(python --version)",
+      "PowerShell(pip --version)",
+      "PowerShell(python -c \"import sys; print\\(sys.executable\\)\")",
+      "PowerShell(python -m pip --version; Write-Output \"---venv check---\"; Get-ChildItem -Path \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\" -Directory | Where-Object { $_.Name -in @\\('venv','.venv','env'\\) } | Select-Object Name)",
+      "PowerShell($py = \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\.venv\\\\Scripts\\\\python.exe\"; & $py --version; & $py -c \"import torch; print\\('torch', torch.__version__\\)\")",
+      "PowerShell($py = \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\.venv\\\\Scripts\\\\python.exe\"; & $py -c \"import torch, numpy; print\\('imports OK'\\)\")",
+      "PowerShell($py = \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\.venv\\\\Scripts\\\\python.exe\"; & $py \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\Code\\\\CNN_fulltester.py\")",
+      "PowerShell(python -m pip install --upgrade \"pandas>=2.2.2\")",
+      "PowerShell(python -c \"import pandas as pd; import numpy as np; print\\('pandas', pd.__version__, '| numpy', np.__version__, '| OK'\\)\")",
+      "PowerShell($venv = \"c:\\\\Users\\\\emre_\\\\OneDrive\\\\GitHub\\\\CNN_fizzy\\\\.venv\"; Write-Output \"Activate script exists: $\\(Test-Path \"$venv\\\\Scripts\\\\Activate.ps1\"\\)\"; & \"$venv\\\\Scripts\\\\python.exe\" -c \"import sys; print\\('venv python:', sys.version.split\\(\\)[0]\\)\"; & \"$venv\\\\Scripts\\\\python.exe\" -m pip show numpy pandas 2>$null | Select-String -Pattern \"Name|Version\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__"

@@ -72,12 +72,15 @@ CONFIDENCE_THRESHOLD = 0.90
 num_classes = CLASSES_AMOUNT
 matrix = torch.zeros(num_classes, num_classes, dtype=torch.int64)
 
+IDLE_INDEX = class_names.index('idle')
+
 total_correct = 0
 total_count = 0
 conf_correct = 0
 conf_count = 0
 noconf_correct = 0
 noconf_count = 0
+noconf_nonidle_count = 0  # non-confident predictions whose true label isn't idle (missed real gestures)
 
 net.eval()
 with torch.no_grad():
@@ -99,6 +102,7 @@ with torch.no_grad():
         noconf_mask = ~is_confident
         noconf_correct += (correct & noconf_mask).sum().item()
         noconf_count += noconf_mask.sum().item()
+        noconf_nonidle_count += (noconf_mask & (labels != IDLE_INDEX)).sum().item()
 
         for t, p, c in zip(labels.cpu(), predicted.cpu(), is_confident.cpu()):
             if c:
@@ -116,6 +120,13 @@ if noconf_count > 0:
     print(f"Accuracy (no confidence):  {noconf_correct}/{noconf_count} = {100*noconf_correct/noconf_count:.1f}%")
 else:
     print("Accuracy (no confidence):  no low-confidence predictions")
+
+# Correct confident predictions / (all confident predictions + non-confident non-idle ones)
+effective_denom = conf_count + noconf_nonidle_count
+if effective_denom > 0:
+    print(f"Accuracy (effective):      {conf_correct}/{effective_denom} = {100*conf_correct/effective_denom:.1f}%")
+else:
+    print("Accuracy (effective):      no eligible predictions")
 
 print("\nConfusion Matrix (confident predictions only)")
 print(f"{'':>8}" + "".join(f"{name:>8}" for name in class_names))
