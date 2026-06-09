@@ -60,7 +60,8 @@
       "Bash(python -m py_compile panels/training_panel.py managers/training_manager.py)",
       "Bash(python -m py_compile managers/graph_manager.py managers/analyse_manager.py managers/classification_analysis_manager.py fizzy_imu_dashboard.py)",
       "Bash(python -m py_compile managers/classification_analysis_manager.py panels/classification_analysis_panel.py)",
-      "Bash(python -m py_compile managers/classification_analysis_manager.py managers/graph_manager.py panels/classification_analysis_panel.py)"
+      "Bash(python -m py_compile managers/classification_analysis_manager.py managers/graph_manager.py panels/classification_analysis_panel.py)",
+      "Bash(python -m py_compile dialog_utils.py managers/classification_analysis_manager.py panels/classification_analysis_panel.py)"
     ],
     "additionalDirectories": [
       "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__",
