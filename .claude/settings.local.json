@@ -56,7 +56,11 @@
       "Bash(python3 -c ' *)",
       "Bash(.venv/Scripts/python.exe -c ' *)",
       "Bash(.venv/Scripts/python.exe -c \"import sklearn, matplotlib; print\\('sklearn', sklearn.__version__\\); print\\('matplotlib', matplotlib.__version__\\)\")",
-      "Bash(.venv/Scripts/python.exe -m py_compile Code/Trainer_CNN.py)"
+      "Bash(.venv/Scripts/python.exe -m py_compile Code/Trainer_CNN.py)",
+      "Bash(python -m py_compile panels/training_panel.py managers/training_manager.py)",
+      "Bash(python -m py_compile managers/graph_manager.py managers/analyse_manager.py managers/classification_analysis_manager.py fizzy_imu_dashboard.py)",
+      "Bash(python -m py_compile managers/classification_analysis_manager.py panels/classification_analysis_panel.py)",
+      "Bash(python -m py_compile managers/classification_analysis_manager.py managers/graph_manager.py panels/classification_analysis_panel.py)"
     ],
     "additionalDirectories": [
       "c:\\Users\\emre_\\OneDrive\\GitHub\\Fizzy-code\\BEP code\\CNN\\__pycache__",
